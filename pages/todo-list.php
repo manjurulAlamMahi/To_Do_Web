@@ -30,7 +30,7 @@ require_login_page('../auth/login.php');
 <body>
 <div class="container py-4 py-md-5">
   <div class="row justify-content-center">
-    <div class="col-lg-7">
+    <div class="col-lg-9">
 
       <div class="d-flex justify-content-between align-items-center mb-3">
         <span class="fw-semibold">

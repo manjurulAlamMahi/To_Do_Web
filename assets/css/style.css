@@ -127,6 +127,10 @@ body {
    Dragula drag state
    ============================================================ */
 .gu-mirror {
+  position: fixed !important;
+  z-index: 9999;
+  margin: 0 !important;
+  pointer-events: none;
   list-style: none;
   background-color: var(--surface);
   box-shadow: var(--shadow-hover);
