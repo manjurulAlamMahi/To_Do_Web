@@ -1,0 +1,47 @@
+<h2>How should the top of the todo page look?</h2>
+<p class="subtitle">Currently it's just a "Hello, name" + Logout button floating above the card</p>
+
+<div class="options" style="grid-template-columns: 1fr 1fr;">
+  <div class="option" data-choice="minimal" onclick="toggleSelect(this)">
+    <div class="content" style="width:100%">
+      <h3>A. Minimal (refined)</h3>
+      <p>Keep it lightweight — just a greeting and logout, restyled to match the new look. No full navbar.</p>
+      <div class="mockup" style="margin-top:12px">
+        <div class="mockup-body" style="background:#f4f5fb;padding:16px;min-height:140px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="width:26px;height:26px;border-radius:50%;background:#6366F1;"></div>
+              <span style="height:9px;width:80px;background:#dcdff0;border-radius:4px;display:inline-block;"></span>
+            </div>
+            <span style="height:22px;width:64px;background:#fff;border:1px solid #e3e5f2;border-radius:7px;display:inline-block;"></span>
+          </div>
+          <div style="background:#fff;border-radius:12px;height:70px;box-shadow:0 1px 3px rgba(20,20,50,.06);"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="navbar" onclick="toggleSelect(this)">
+    <div class="content" style="width:100%">
+      <h3>B. Full top navbar</h3>
+      <p>A proper app bar: logo/app name on the left, user menu (name + logout) on the right, full-width, sits above the page background — feels more like a "real product".</p>
+      <div class="mockup" style="margin-top:12px">
+        <div class="mockup-body" style="padding:0;min-height:140px;">
+          <div style="background:#fff;border-bottom:1px solid #ececf5;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="width:22px;height:22px;border-radius:6px;background:#6366F1;"></div>
+              <span style="height:9px;width:70px;background:#dcdff0;border-radius:4px;display:inline-block;"></span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="width:24px;height:24px;border-radius:50%;background:#e4e6f5;"></div>
+              <span style="height:9px;width:50px;background:#dcdff0;border-radius:4px;display:inline-block;"></span>
+            </div>
+          </div>
+          <div style="background:#f4f5fb;padding:16px;">
+            <div style="background:#fff;border-radius:12px;height:70px;box-shadow:0 1px 3px rgba(20,20,50,.06);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

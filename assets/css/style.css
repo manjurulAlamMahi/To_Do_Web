@@ -1,0 +1,290 @@
+/* ============================================================
+   Design tokens — light theme (default) + dark theme overrides
+   ============================================================ */
+:root {
+  --bg: #f4f5fb;
+  --surface: #ffffff;
+  --surface-muted: #f8f9fc;
+  --border: #e7e9f5;
+  --text: #1f2233;
+  --text-muted: #6b7094;
+  --accent: #6366f1;
+  --accent-hover: #4f46e5;
+  --accent-rgb: 99, 102, 241;
+  --accent-contrast: #ffffff;
+  --shadow-card: 0 1px 3px rgba(31, 34, 51, 0.06), 0 1px 2px rgba(31, 34, 51, 0.04);
+  --shadow-hover: 0 6px 16px rgba(31, 34, 51, 0.10);
+}
+
+:root[data-bs-theme="dark"] {
+  --bg: #14141f;
+  --surface: #1b1b29;
+  --surface-muted: #1e1e2c;
+  --border: #2c2c3d;
+  --text: #e7e8f5;
+  --text-muted: #8b8ea8;
+  --accent: #8183f4;
+  --accent-hover: #6366f1;
+  --accent-rgb: 129, 131, 244;
+  --accent-contrast: #14141f;
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.45);
+}
+
+/* ============================================================
+   Re-theme Bootstrap's primary color family to the indigo accent,
+   and point Bootstrap's body/border/secondary-text tokens at our
+   own theme tokens. Each override below is declared ONCE (not
+   duplicated per theme): --accent/--bg/--text/etc. are redefined
+   per theme scope above, and a var() reference always resolves
+   against the current element's cascaded custom-property value —
+   not a static snapshot from where it's written — so a single
+   declaration here stays correct in both themes.
+
+   Verified against the actual shipped bootstrap@5.3.3/dist/css/
+   bootstrap.css: most components read color from their OWN
+   per-component custom property (e.g. .btn-primary's --bs-btn-bg
+   is a literal hex, not derived from --bs-primary) rather than
+   the root --bs-primary, so those components are overridden
+   individually below rather than relying on the root override
+   alone. .text-primary, .text-bg-primary (the pending badge),
+   .link-primary and <a> links DO derive from --bs-primary(-rgb),
+   so the root override is sufficient for those.
+   ============================================================ */
+:root {
+  --bs-primary: var(--accent);
+  --bs-primary-rgb: var(--accent-rgb);
+  --bs-link-color: var(--accent);
+  --bs-link-color-rgb: var(--accent-rgb);
+  --bs-link-hover-color: var(--accent-hover);
+  --bs-body-bg: var(--bg);
+  --bs-body-color: var(--text);
+  --bs-border-color: var(--border);
+  --bs-secondary-color: var(--text-muted);
+  --bs-body-font-family: 'Inter', var(--bs-font-sans-serif);
+}
+
+.btn-primary {
+  --bs-btn-color: var(--accent-contrast);
+  --bs-btn-bg: var(--accent);
+  --bs-btn-border-color: var(--accent);
+  --bs-btn-hover-color: var(--accent-contrast);
+  --bs-btn-hover-bg: var(--accent-hover);
+  --bs-btn-hover-border-color: var(--accent-hover);
+  --bs-btn-active-color: var(--accent-contrast);
+  --bs-btn-active-bg: var(--accent-hover);
+  --bs-btn-active-border-color: var(--accent-hover);
+  --bs-btn-focus-shadow-rgb: var(--accent-rgb);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--accent);
+  --bs-btn-border-color: var(--accent);
+  --bs-btn-hover-bg: var(--accent);
+  --bs-btn-hover-border-color: var(--accent);
+  --bs-btn-active-bg: var(--accent);
+  --bs-btn-active-border-color: var(--accent);
+  --bs-btn-focus-shadow-rgb: var(--accent-rgb);
+}
+
+.form-control:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.25rem rgba(var(--accent-rgb), 0.25);
+}
+
+.form-check-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.25rem rgba(var(--accent-rgb), 0.25);
+}
+
+.form-check-input:checked {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+.text-bg-primary {
+  color: var(--accent-contrast) !important;
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+body {
+  min-height: 100vh;
+}
+
+.theme-toggle-btn {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 50%;
+}
+
+/* ============================================================
+   Dragula drag state
+   ============================================================ */
+.gu-mirror {
+  list-style: none;
+  background-color: var(--surface);
+  box-shadow: var(--shadow-hover);
+  opacity: 0.95;
+  border-radius: 12px;
+}
+
+.gu-transit {
+  opacity: 0.3;
+}
+
+/* ============================================================
+   Animations
+   ============================================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.25s ease;
+}
+
+/* ============================================================
+   Auth pages (login / register)
+   ============================================================ */
+.auth-body {
+  background: linear-gradient(160deg, var(--bg) 0%, var(--surface) 100%);
+}
+
+.auth-card {
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: var(--surface);
+  box-shadow: var(--shadow-hover);
+}
+
+.auth-card .alert {
+  border: none;
+  border-radius: 10px;
+}
+
+.auth-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: var(--accent);
+  color: var(--accent-contrast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin: 0 auto 0.75rem;
+}
+
+/* ============================================================
+   Todo page — card + toolbar
+   ============================================================ */
+.todo-card {
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.todo-card .card-header {
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.todo-card .card-body {
+  background-color: var(--surface);
+}
+
+/* ============================================================
+   Todo page — task list (individual task cards)
+   ============================================================ */
+#todo-list-page {
+  margin: 0;
+  min-height: 40px;
+}
+
+.todo-item {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.todo-item:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.todo-item.todo-completed {
+  background-color: var(--surface-muted);
+}
+
+.todo-drag-handle {
+  cursor: grab;
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-muted);
+  opacity: 0.75;
+  transition: opacity 0.15s ease;
+}
+
+.todo-item:hover .todo-drag-handle {
+  opacity: 1;
+}
+
+.todo-drag-handle:active {
+  cursor: grabbing;
+}
+
+.todo-text {
+  word-break: break-word;
+}
+
+.todo-item .todo-toggle {
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.todo-edit-btn,
+.todo-delete-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  opacity: 0.75;
+  transition: opacity 0.15s ease, color 0.15s ease;
+  padding: 0.15rem 0.4rem;
+  line-height: 1;
+}
+
+.todo-item:hover .todo-edit-btn,
+.todo-item:hover .todo-delete-btn,
+.todo-edit-btn:focus-visible,
+.todo-delete-btn:focus-visible {
+  opacity: 1;
+}
+
+.todo-edit-btn:hover {
+  color: var(--accent);
+}
+
+.todo-delete-btn:hover {
+  color: var(--bs-danger);
+}
+
+.todo-edit-input {
+  max-width: 100%;
+}
