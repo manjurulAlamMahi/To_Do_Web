@@ -347,14 +347,10 @@
 
   // ---------- tabs ----------
 
-  todoTabsEl.addEventListener('click', function (e) {
-    const btn = e.target.closest('.nav-link');
-    if (!btn) return;
+  todoTabsEl.addEventListener('change', function (e) {
+    if (!e.target.classList.contains('btn-check')) return;
 
-    activeTab = btn.dataset.tab;
-    todoTabsEl.querySelectorAll('.nav-link').forEach(function (link) {
-      link.classList.toggle('active', link === btn);
-    });
+    activeTab = e.target.dataset.tab;
     render();
   });
 

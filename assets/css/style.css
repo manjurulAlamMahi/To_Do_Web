@@ -292,3 +292,20 @@ body {
 .todo-edit-input {
   max-width: 100%;
 }
+
+/* ============================================================
+   Todo page — tab filter (All / Fixed / Not Fixed)
+   ============================================================ */
+.todo-tab-group .btn {
+  font-weight: 500;
+}
+
+.todo-tab-group .btn:first-child {
+  border-top-left-radius: 50rem;
+  border-bottom-left-radius: 50rem;
+}
+
+.todo-tab-group .btn:last-child {
+  border-top-right-radius: 50rem;
+  border-bottom-right-radius: 50rem;
+}

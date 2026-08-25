@@ -85,17 +85,16 @@ require_login_page('../auth/login.php');
             </div>
           </form>
 
-          <ul class="nav nav-pills mb-3" id="todo-tabs">
-            <li class="nav-item">
-              <button type="button" class="nav-link active" data-tab="all">All</button>
-            </li>
-            <li class="nav-item">
-              <button type="button" class="nav-link" data-tab="fixed">Fixed</button>
-            </li>
-            <li class="nav-item">
-              <button type="button" class="nav-link" data-tab="local">Not Fixed</button>
-            </li>
-          </ul>
+          <div class="btn-group todo-tab-group mb-3" role="group" id="todo-tabs" aria-label="Filter tasks">
+            <input type="radio" class="btn-check" name="todo-tab" id="todo-tab-all" data-tab="all" autocomplete="off" checked>
+            <label class="btn btn-outline-primary" for="todo-tab-all">All</label>
+
+            <input type="radio" class="btn-check" name="todo-tab" id="todo-tab-fixed" data-tab="fixed" autocomplete="off">
+            <label class="btn btn-outline-primary" for="todo-tab-fixed">Fixed</label>
+
+            <input type="radio" class="btn-check" name="todo-tab" id="todo-tab-local" data-tab="local" autocomplete="off">
+            <label class="btn btn-outline-primary" for="todo-tab-local">Not Fixed</label>
+          </div>
 
           <ul id="todo-list-page" class="list-unstyled mb-0"></ul>
 
