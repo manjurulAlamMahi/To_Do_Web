@@ -85,11 +85,23 @@ require_login_page('../auth/login.php');
             </div>
           </form>
 
+          <ul class="nav nav-pills mb-3" id="todo-tabs">
+            <li class="nav-item">
+              <button type="button" class="nav-link active" data-tab="all">All</button>
+            </li>
+            <li class="nav-item">
+              <button type="button" class="nav-link" data-tab="fixed">Fixed</button>
+            </li>
+            <li class="nav-item">
+              <button type="button" class="nav-link" data-tab="local">Not Fixed</button>
+            </li>
+          </ul>
+
           <ul id="todo-list-page" class="list-unstyled mb-0"></ul>
 
           <div id="empty-state" class="text-center text-muted py-5 d-none">
             <i class="ri-inbox-line display-4 d-block mb-2"></i>
-            No tasks yet. Add one above!
+            <span id="empty-state-text">No tasks yet. Add one above!</span>
           </div>
         </div>
       </div>

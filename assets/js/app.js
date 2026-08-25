@@ -14,10 +14,19 @@
   const btnMarkAll = document.getElementById('btn-mark-all');
   const btnUnmarkAll = document.getElementById('btn-unmark-all');
   const btnClearAll = document.getElementById('btn-clear-all');
+  const todoTabsEl = document.getElementById('todo-tabs');
+  const emptyStateTextEl = document.getElementById('empty-state-text');
 
   let fixedTasks = [];
   let localTasks = [];
   let drake = null;
+  let activeTab = 'all';
+
+  const EMPTY_STATE_TEXT = {
+    all: 'No tasks yet. Add one above!',
+    fixed: 'No fixed tasks yet.',
+    local: 'No local tasks yet.',
+  };
 
   // ---------- utilities ----------
 
@@ -117,19 +126,28 @@
     const sortedFixed = fixedTasks.slice().sort(function (a, b) { return a.order - b.order; });
     const sortedLocal = localTasks.slice().sort(function (a, b) { return a.order - b.order; });
 
+    const showFixed = activeTab === 'all' || activeTab === 'fixed';
+    const showLocal = activeTab === 'all' || activeTab === 'local';
+
     todoListEl.innerHTML = '';
 
-    sortedFixed.forEach(function (task) {
-      todoListEl.appendChild(createTaskElement(task, 'fixed'));
-    });
-    sortedLocal.forEach(function (task) {
-      todoListEl.appendChild(createTaskElement(task, 'local'));
-    });
+    if (showFixed) {
+      sortedFixed.forEach(function (task) {
+        todoListEl.appendChild(createTaskElement(task, 'fixed'));
+      });
+    }
+    if (showLocal) {
+      sortedLocal.forEach(function (task) {
+        todoListEl.appendChild(createTaskElement(task, 'local'));
+      });
+    }
 
-    const total = sortedFixed.length + sortedLocal.length;
-    const pending = sortedFixed.concat(sortedLocal).filter(function (t) { return !t.completed; }).length;
+    const visible = (showFixed ? sortedFixed : []).concat(showLocal ? sortedLocal : []);
+    const total = visible.length;
+    const pending = visible.filter(function (t) { return !t.completed; }).length;
 
     badgeEl.textContent = pending;
+    emptyStateTextEl.textContent = EMPTY_STATE_TEXT[activeTab];
     emptyStateEl.classList.toggle('d-none', total > 0);
     todoListEl.classList.toggle('d-none', total === 0);
   }
@@ -327,18 +345,40 @@
     });
   }
 
-  // ---------- mark all / unmark all / clear all ----------
+  // ---------- tabs ----------
+
+  todoTabsEl.addEventListener('click', function (e) {
+    const btn = e.target.closest('.nav-link');
+    if (!btn) return;
+
+    activeTab = btn.dataset.tab;
+    todoTabsEl.querySelectorAll('.nav-link').forEach(function (link) {
+      link.classList.toggle('active', link === btn);
+    });
+    render();
+  });
+
+  // ---------- mark all / unmark all / clear all (scoped to active tab) ----------
 
   function setAllCompleted(completed) {
-    fixedTasks.forEach(function (t) { t.completed = completed; });
-    localTasks.forEach(function (t) { t.completed = completed; });
-    saveLocalTasks();
+    const touchFixed = activeTab === 'all' || activeTab === 'fixed';
+    const touchLocal = activeTab === 'all' || activeTab === 'local';
+
+    if (touchFixed) {
+      fixedTasks.forEach(function (t) { t.completed = completed; });
+    }
+    if (touchLocal) {
+      localTasks.forEach(function (t) { t.completed = completed; });
+      saveLocalTasks();
+    }
     render();
 
-    apiFetch('../api/todo_toggle_all.php', 'POST', { completed: completed })
-      .catch(function () {
-        showError('Could not update tasks.');
-      });
+    if (touchFixed) {
+      apiFetch('../api/todo_toggle_all.php', 'POST', { completed: completed })
+        .catch(function () {
+          showError('Could not update tasks.');
+        });
+    }
   }
 
   btnMarkAll.addEventListener('click', function () {
@@ -350,23 +390,40 @@
   });
 
   btnClearAll.addEventListener('click', function () {
-    const doClear = function () {
-      apiFetch('../api/todo_clear_all.php', 'POST', {})
-        .then(function () {
-          fixedTasks = [];
-          localTasks = [];
-          saveLocalTasks();
-          render();
-        })
-        .catch(function () {
-          showError('Could not clear tasks.');
-        });
+    const touchFixed = activeTab === 'all' || activeTab === 'fixed';
+    const touchLocal = activeTab === 'all' || activeTab === 'local';
+
+    const clearLocalState = function () {
+      if (touchFixed) fixedTasks = [];
+      if (touchLocal) {
+        localTasks = [];
+        saveLocalTasks();
+      }
+      render();
     };
+
+    const doClear = function () {
+      if (touchFixed) {
+        apiFetch('../api/todo_clear_all.php', 'POST', {})
+          .then(clearLocalState)
+          .catch(function () {
+            showError('Could not clear tasks.');
+          });
+      } else {
+        clearLocalState();
+      }
+    };
+
+    const confirmText = activeTab === 'fixed'
+      ? 'Clear all fixed tasks?'
+      : activeTab === 'local'
+        ? 'Clear all local tasks?'
+        : 'Clear all tasks?';
 
     if (window.Swal) {
       Swal.fire({
-        title: 'Clear all tasks?',
-        text: 'This will permanently delete every task. This cannot be undone.',
+        title: confirmText,
+        text: 'This will permanently delete the tasks in this tab. This cannot be undone.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, clear all',
@@ -374,7 +431,7 @@
       }).then(function (result) {
         if (result.isConfirmed) doClear();
       });
-    } else if (confirm('Clear all tasks? This cannot be undone.')) {
+    } else if (confirm(confirmText + ' This cannot be undone.')) {
       doClear();
     }
   });
