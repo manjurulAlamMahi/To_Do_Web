@@ -293,6 +293,10 @@ body {
   max-width: 100%;
 }
 
+.todo-item-meta {
+  word-break: break-word;
+}
+
 /* ============================================================
    Todo page — tab filter (All / Fixed / Not Fixed)
    ============================================================ */
