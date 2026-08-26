@@ -47,6 +47,11 @@ require_login_page('../auth/login.php');
         </div>
       </div>
 
+      <div class="btn-group todo-tab-group mb-3" role="group" aria-label="Switch module">
+        <a href="todo-list.php" class="btn btn-primary" aria-current="page">To Do List</a>
+        <a href="plan-task.php" class="btn btn-outline-primary">My Plan / Task</a>
+      </div>
+
       <div class="card todo-card">
         <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
           <h5 class="mb-0 d-flex align-items-center">

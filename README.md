@@ -1,8 +1,9 @@
 # My To Do List (Team ERP Todo Module)
 
-A self-contained PHP + MySQL to-do list app: registration, login, and a
-todo list page with fixed (DB-synced) tasks and local (browser-only) tasks,
-drag-to-reorder, inline editing, and bulk actions.
+A self-contained PHP + MySQL app with two modules: a To Do List and a My
+Plan / Task tracker (project name / responsible person / comment). Both
+share the same interaction model — fixed (DB-synced) items and local
+(browser-only) items, drag-to-reorder, inline editing, and bulk actions.
 
 ## Tech stack
 
@@ -21,6 +22,14 @@ drag-to-reorder, inline editing, and bulk actions.
 
    ```
    mysql -u root -p < database.sql
+   ```
+
+   Then import `database_plan_tasks.sql` the same way (or drag-and-drop it
+   into phpMyAdmin). It only adds the new `plan_tasks` table — it does not
+   touch `users` or `todos`.
+
+   ```
+   mysql -u root -p < database_plan_tasks.sql
    ```
 
 2. **Configure the database connection.**
@@ -64,10 +73,12 @@ drag-to-reorder, inline editing, and bulk actions.
 ├── auth/{login,register,logout}.php
 ├── api/                       JSON endpoints (session + CSRF guarded)
 ├── includes/{session,functions}.php
-├── assets/{css/style.css, js/app.js}
-├── pages/todo-list.php        main todo page
+├── assets/{css/style.css, js/app.js, js/plan.js}
+├── pages/todo-list.php        To Do List page
+├── pages/plan-task.php        My Plan / Task page
 ├── index.php                  redirect to login or todo list
-└── database.sql
+├── database.sql
+└── database_plan_tasks.sql    plan_tasks table (import separately)
 ```
 
 ## Security notes
